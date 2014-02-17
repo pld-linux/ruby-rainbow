@@ -1,20 +1,25 @@
 #
 # Conditional build:
-%bcond_without	tests		# build without tests
+%bcond_with	tests		# build without tests
 
 %define	pkgname rainbow
 Summary:	Ruby String class extension enabling coloring text on ANSI terminals
 Name:		ruby-%{pkgname}
-Version:	1.1.4
+Version:	2.0.0
 Release:	1
 License:	MIT
 Group:		Development/Languages
 Source0:	http://rubygems.org/gems/%{pkgname}-%{version}.gem
-# Source0-md5:	c5bb469c89b151668f8e4eeb37e98cbf
-URL:		http://ku1ik.com/
+# Source0-md5:	5e2a70432911f5049472d1273c1521c7
+URL:		https://github.com/sickill/rainbow
 BuildRequires:	rpm-rubyprov
 BuildRequires:	rpmbuild(macros) >= 1.665
-BuildRequires:	rubygem(minitest)
+%if %{with tests}
+BuildRequires:	ruby-bundler < 2
+BuildRequires:	ruby-bundler >= 1.3
+BuildRequires:	ruby-rake
+BuildRequires:	ruby-rspec
+%endif
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -30,8 +35,7 @@ colorizing text on ANSI terminals.
 %__gem_helper spec
 
 %if %{with tests}
-# Force coloring, otherwise it won't color
-CLICOLOR_FORCE=1 ruby test/*_test.rb
+rspec
 %endif
 
 %install
@@ -45,8 +49,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README.markdown Changelog LICENSE
+%doc README.markdown Changelog.md LICENSE
 %{ruby_vendorlibdir}/rainbow.rb
-%{ruby_vendorlibdir}/ansi_color.rb
-%{ruby_vendorlibdir}/ansi_rgb.rb
+%{ruby_vendorlibdir}/rainbow
 %{ruby_specdir}/%{pkgname}-%{version}.gemspec
