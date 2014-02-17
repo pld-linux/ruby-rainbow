@@ -12,10 +12,9 @@ Group:		Development/Languages
 Source0:	http://rubygems.org/gems/%{pkgname}-%{version}.gem
 # Source0-md5:	c5bb469c89b151668f8e4eeb37e98cbf
 URL:		http://ku1ik.com/
-BuildRequires:	ruby
+BuildRequires:	rpm-rubyprov
+BuildRequires:	rpmbuild(macros) >= 1.665
 BuildRequires:	rubygem(minitest)
-Requires:	ruby(release)
-Requires:	ruby(rubygems)
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -27,6 +26,9 @@ colorizing text on ANSI terminals.
 %setup -q -n %{pkgname}-%{version}
 
 %build
+# write .gemspec
+%__gem_helper spec
+
 %if %{with tests}
 # Force coloring, otherwise it won't color
 CLICOLOR_FORCE=1 ruby test/*_test.rb
@@ -34,8 +36,9 @@ CLICOLOR_FORCE=1 ruby test/*_test.rb
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{ruby_vendorlibdir}
+install -d $RPM_BUILD_ROOT{%{ruby_vendorlibdir},%{ruby_specdir}}
 cp -a lib/* $RPM_BUILD_ROOT%{ruby_vendorlibdir}
+cp -p %{pkgname}-%{version}.gemspec $RPM_BUILD_ROOT%{ruby_specdir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -46,3 +49,4 @@ rm -rf $RPM_BUILD_ROOT
 %{ruby_vendorlibdir}/rainbow.rb
 %{ruby_vendorlibdir}/ansi_color.rb
 %{ruby_vendorlibdir}/ansi_rgb.rb
+%{ruby_specdir}/%{pkgname}-%{version}.gemspec
