@@ -6,7 +6,7 @@
 Summary:	Ruby String class extension enabling coloring text on ANSI terminals
 Name:		ruby-%{pkgname}
 Version:	2.0.0
-Release:	1
+Release:	2
 License:	MIT
 Group:		Development/Languages
 Source0:	http://rubygems.org/gems/%{pkgname}-%{version}.gem
