@@ -5,12 +5,12 @@
 %define	pkgname rainbow
 Summary:	Ruby String class extension enabling coloring text on ANSI terminals
 Name:		ruby-%{pkgname}
-Version:	2.0.0
-Release:	2
+Version:	3.0.0
+Release:	1
 License:	MIT
 Group:		Development/Languages
 Source0:	http://rubygems.org/gems/%{pkgname}-%{version}.gem
-# Source0-md5:	5e2a70432911f5049472d1273c1521c7
+# Source0-md5:	a4959de1d41c77d25eb56dbeeb37cf39
 URL:		https://github.com/sickill/rainbow
 BuildRequires:	rpm-rubyprov
 BuildRequires:	rpmbuild(macros) >= 1.665
